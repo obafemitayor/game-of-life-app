@@ -7,6 +7,12 @@ This is a simple implementation of the Conway's Game of Life written with Ruby. 
 
 Conway's Game of Life is a cellular automaton that simulates the evolution of a grid of cells over time based on a set of simple rules. Each cell can be either alive or dead, and its state in the next generation is determined by the states of its neighboring cells.
 
+## Code Structure
+
+1. The entry point of the application is ```main.rb```. It is what loads the game and it does this by calling the ```GameOfLifeApp``` class in the ```game_of_life_app.rb``` file.
+2. The ```game_of_life_app.rb``` file contains the I/O logic of the application. This is where the console interaction with the user happens.
+3. The ```game_of_life.rb```file contains logic that displays the board and calculates the next state of the board.
+
 
 ## Installation
 
