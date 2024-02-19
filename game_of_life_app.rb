@@ -14,6 +14,9 @@ class GameOfLifeApp
         when '2'
           initial_state = [[1, 1], [1, 2], [2, 1], [2, 2]]
           display_pattern(initial_state, 5, 5)
+        when '3'
+          initial_state = [[1,2], [2,3], [3,1], [3,2], [3,3]]
+          display_pattern(initial_state, nil, nil)
         when 'q'
           puts "Quitting the Game of Life Console App. Goodbye!"
           break
@@ -30,6 +33,7 @@ class GameOfLifeApp
       puts "Choose a pattern to start the simulation:"
       puts "1. Blinker"
       puts "2. Block"
+      puts "3. Glider"
       puts "Enter 'q' to quit"
     end
   
@@ -38,7 +42,7 @@ class GameOfLifeApp
     end
   
     def display_pattern(initial_state, rows, columns)
-      game = GameOfLife.new(rows, columns, initial_state)
+      game = GameOfLife.new(initial_state, rows, columns)
   
       puts "Current state:"
       game.display_board

@@ -11,6 +11,7 @@ RSpec.describe GameOfLifeApp do
       Choose a pattern to start the simulation:
       1. Blinker
       2. Block
+      3. Glider
       Enter 'q' to quit
       > Invalid option. Please choose again.
       > Quitting the Game of Life Console App. Goodbye!
@@ -43,6 +44,7 @@ RSpec.describe GameOfLifeApp do
       Choose a pattern to start the simulation:
       1. Blinker
       2. Block
+      3. Glider
       Enter 'q' to quit
       > Current state:
       o x o 
@@ -54,6 +56,7 @@ RSpec.describe GameOfLifeApp do
       Choose a pattern to start the simulation:
       1. Blinker
       2. Block
+      3. Glider
       Enter 'q' to quit
       > Quitting the Game of Life Console App. Goodbye!
       OUTPUT
@@ -79,13 +82,14 @@ RSpec.describe GameOfLifeApp do
       expect(output_string).to eq(expected_output)
     end
 
-    it "return correct output when user selects blinker option and then selects an Invalid option" do
+    it "return correct output when user selects blinker pattern and then selects an Invalid option" do
 
       expected_output = <<~OUTPUT
       Welcome to the Game of Life App
       Choose a pattern to start the simulation:
       1. Blinker
       2. Block
+      3. Glider
       Enter 'q' to quit
       > Current state:
       o x o 
@@ -99,6 +103,7 @@ RSpec.describe GameOfLifeApp do
       Choose a pattern to start the simulation:
       1. Blinker
       2. Block
+      3. Glider
       Enter 'q' to quit
       > Quitting the Game of Life Console App. Goodbye!
       OUTPUT
@@ -125,13 +130,14 @@ RSpec.describe GameOfLifeApp do
       expect(output_string).to eq(expected_output)
     end
 
-    it "return correct output when user selects blinker option and selects next generation" do
+    it "return correct output when user selects blinker pattern and selects next generation" do
 
       expected_output = <<~OUTPUT
       Welcome to the Game of Life App
       Choose a pattern to start the simulation:
       1. Blinker
       2. Block
+      3. Glider
       Enter 'q' to quit
       > Current state:
       o x o 
@@ -148,6 +154,7 @@ RSpec.describe GameOfLifeApp do
       Choose a pattern to start the simulation:
       1. Blinker
       2. Block
+      3. Glider
       Enter 'q' to quit
       > Quitting the Game of Life Console App. Goodbye!
       OUTPUT
@@ -172,12 +179,13 @@ RSpec.describe GameOfLifeApp do
       expect(output_string).to eq(expected_output)
     end
 
-    it "return correct output when user selects block option" do
+    it "return correct output when user selects block pattern" do
       expected_output = <<~OUTPUT
       Welcome to the Game of Life App
       Choose a pattern to start the simulation:
       1. Blinker
       2. Block
+      3. Glider
       Enter 'q' to quit
       > Current state:
       o o o o o 
@@ -191,6 +199,7 @@ RSpec.describe GameOfLifeApp do
       Choose a pattern to start the simulation:
       1. Blinker
       2. Block
+      3. Glider
       Enter 'q' to quit
       > Quitting the Game of Life Console App. Goodbye!
       OUTPUT
@@ -217,12 +226,13 @@ RSpec.describe GameOfLifeApp do
       expect(output_string).to eq(expected_output)
     end
 
-    it "return correct output when user selects block option and selects next generation" do
+    it "return correct output when user selects block pattern and selects next generation" do
       expected_output = <<~OUTPUT
       Welcome to the Game of Life App
       Choose a pattern to start the simulation:
       1. Blinker
       2. Block
+      3. Glider
       Enter 'q' to quit
       > Current state:
       o o o o o 
@@ -243,6 +253,7 @@ RSpec.describe GameOfLifeApp do
       Choose a pattern to start the simulation:
       1. Blinker
       2. Block
+      3. Glider
       Enter 'q' to quit
       > Quitting the Game of Life Console App. Goodbye!
       OUTPUT
@@ -251,6 +262,58 @@ RSpec.describe GameOfLifeApp do
 
       # Stubbing the get_user_input method
       allow(app).to receive(:get_user_input).and_return('2', '', 'q', 'q')
+
+      # Use StringIO to capture the output
+      output = StringIO.new
+      $stdout = output
+
+      app.load_game
+
+      # Reset $stdout
+      $stdout = STDOUT
+
+      # Get the captured output as a string
+      output_string = output.string
+      
+      expect(output_string).to eq(expected_output)
+    end
+
+    it "return correct output when user selects glider pattern and selects next generation" do
+      expected_output = <<~OUTPUT
+      Welcome to the Game of Life App
+      Choose a pattern to start the simulation:
+      1. Blinker
+      2. Block
+      3. Glider
+      Enter 'q' to quit
+      > Current state:
+      o o o o o 
+      o o x o o 
+      o o o x o 
+      o x x x o 
+      o o o o o 
+      
+      Press 'Enter' to generate the next state, or enter 'q' to quit.
+      > o o o o o 
+      o x o x o 
+      o o x x o 
+      o o x o o 
+      o o o o o 
+      
+      Press 'Enter' to generate the next state, or enter 'q' to quit.
+      > Welcome to the Game of Life App
+      Choose a pattern to start the simulation:
+      1. Blinker
+      2. Block
+      3. Glider
+      Enter 'q' to quit
+      > Quitting the Game of Life Console App. Goodbye!
+      OUTPUT
+
+      app = GameOfLifeApp.new
+
+      # Stubbing the get_user_input method
+      allow(app).to receive(:get_user_input).and_return('3', '', 'q', 'q')
 
       # Use StringIO to capture the output
       output = StringIO.new
