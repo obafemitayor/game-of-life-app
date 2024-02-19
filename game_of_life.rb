@@ -111,7 +111,7 @@ class GameOfLife
       board_array
   end
 
-  # Method to get the initial cells for a dynamic board
+  # Method that returns a hash table that contains the initial state of the cells
   def get_initial_cells(initial_state)
     board = Hash.new(false)
     initial_state.each do |cell|
@@ -120,7 +120,7 @@ class GameOfLife
     board
   end
 
-  # Method to get the boundaries of a dynamic board
+  # Method to get the boundaries of a dynamic board based on the positions of the initial state
   def get_board_boundaries()
     min_row_value = @initial_cells.keys.map { |cell| cell[0] }.min - 1
     max_row_value = @initial_cells.keys.map { |cell| cell[0] }.max + 1
@@ -133,7 +133,8 @@ class GameOfLife
   # Method to build a dynamic game board
   # First use a hash table to store the initial state of the cells
   # then get the boundaries of the board based on the positions of the initial state
-  # finally, build the board array based on the boundaries and populate it with the initial state
+  # finally, iterate through the range of the boundaries (i.e  from the minimum row to the maximum row and from the minimum column to the maximum column) 
+  # and then build the board array with the initial state
   def build_dynamic_game_board(initial_state)
     @is_dynamic = true
     @initial_cells = get_initial_cells(initial_state)
