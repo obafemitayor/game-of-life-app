@@ -137,4 +137,45 @@ class GameOfLifeTest < MiniTest::Test
     assert_equal expected_next_generation, @game.instance_variable_get(:@board)
   end
 
+  def test_blinker_pattern_with_dynamic_board_three_generations
+    @initial_state = [[0,1], [1,1], [2,1]]
+    @game = GameOfLife.new(@initial_state, nil, nil)
+    expected_next_generation = [
+        [0, 0, 0, 0, 0],
+        [0, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0]
+      ]
+    @game.get_board_next_state
+    assert_equal expected_next_generation, @game.instance_variable_get(:@board)
+    expected_next_generation = [
+      [0, 0, 0],
+      [0, 1, 0],
+      [0, 1, 0],
+      [0, 1, 0],
+      [0, 0, 0]
+    ]
+    @game.get_board_next_state
+    assert_equal expected_next_generation, @game.instance_variable_get(:@board)
+    expected_next_generation = [
+      [0, 0, 0, 0, 0],
+      [0, 1, 1, 1, 0],
+      [0, 0, 0, 0, 0]
+    ]
+    @game.get_board_next_state
+    assert_equal expected_next_generation, @game.instance_variable_get(:@board)
+  end
+
+  def test_block_pattern_with_dynamic_board
+    @initial_state = [[1,2], [1,3], [2,2], [2,3]]
+    @game = GameOfLife.new(@initial_state, nil, nil)
+    expected_next_generation = [
+        [0, 0, 0, 0],
+        [0, 1, 1, 0],
+        [0, 1, 1, 0],
+        [0, 0, 0, 0]
+        ]
+    @game.get_board_next_state
+    assert_equal expected_next_generation, @game.instance_variable_get(:@board)
+  end
+
 end
