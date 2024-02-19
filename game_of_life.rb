@@ -131,7 +131,7 @@ class GameOfLife
   end
 
   # Method to build a dynamic game board
-  # First use a hash table to store the initial cells
+  # First use a hash table to store the initial state of the cells
   # then get the boundaries of the board based on the initial cells
   # finally, build the board array based on the boundaries and populate it with the initial cells
   def build_dynamic_game_board(initial_state)
