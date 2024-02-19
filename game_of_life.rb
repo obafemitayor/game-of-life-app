@@ -1,7 +1,7 @@
 class GameOfLife
   def initialize(initial_state, rows, cols)
     validate_parameters(initial_state, rows, cols)
-    
+
     initial_state = initial_state.nil? || initial_state.empty? ? [] : initial_state
 
     @rows = rows
@@ -131,6 +131,9 @@ class GameOfLife
   end
 
   # Method to build a dynamic game board
+  # First use a hash table to store the initial cells
+  # then get the boundaries of the board based on the initial cells
+  # finally, build the board array based on the boundaries and populate it with the initial cells
   def build_dynamic_game_board(initial_state)
     @is_dynamic = true
     @initial_cells = get_initial_cells(initial_state)
