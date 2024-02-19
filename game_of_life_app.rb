@@ -4,6 +4,21 @@ class GameOfLifeApp
 
     def load_game
       display_game_menu
+      play_game
+    end
+
+    private
+
+    def display_game_menu
+      puts "Welcome to the Game of Life App"
+      puts "Choose a pattern to start the simulation:"
+      puts "1. Blinker"
+      puts "2. Block"
+      puts "3. Glider"
+      puts "Enter 'q' to quit"
+    end
+
+    def play_game
       loop do
         print "> "
         
@@ -24,17 +39,6 @@ class GameOfLifeApp
           puts "Invalid option. Please choose again."
         end
       end
-    end
-
-    private
-
-    def display_game_menu
-      puts "Welcome to the Game of Life App"
-      puts "Choose a pattern to start the simulation:"
-      puts "1. Blinker"
-      puts "2. Block"
-      puts "3. Glider"
-      puts "Enter 'q' to quit"
     end
   
     def get_user_input

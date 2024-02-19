@@ -6,17 +6,12 @@ class GameOfLife
 
     @rows = rows
     @cols = cols
-    @initial_cells = nil
 
-    if rows.nil? && cols.nil?
-      @board = populate_dynamic_board(initial_state)
-      @is_dynamic = true
-    else
-      @board = populate_fixed_board(initial_state)
-    end
+    @board = rows.nil? && cols.nil? ? build_dynamic_game_board(initial_state) : build_fixed_game_board(initial_state)
 
   end
   
+  # Method to display the board on the console
   def display_board
     @board.each do |row|
       row.each do |cell|
@@ -27,35 +22,48 @@ class GameOfLife
     puts
   end
 
+  # Method to get the next state of the board
   def get_board_next_state
-    new_board = Array.new(@rows) { Array.new(@cols, 0) }
-    alive_cells = []
-  
-    @rows.times do |row|
-      @cols.times do |col|
-        alive_neighbors = get_number_of_alive_neighbours(row, col)
-
-        is_lonely = @board[row][col] == 1 && alive_neighbors < 2
-        is_happy = @board[row][col] == 1 && alive_neighbors == 2 || alive_neighbors == 3
-        is_overcrowded = @board[row][col] == 1 && alive_neighbors > 3
-        can_have_new_life = @board[row][col] == 0 && alive_neighbors == 3
-
-        new_board[row][col] = is_lonely ? 0 : is_happy ? 1 : is_overcrowded ? 0 : can_have_new_life ? 1 : 0
-
-        new_board[row][col] == 1 ? alive_cells << [row, col] : nil
-      end
-    end
-    
-    if @is_dynamic
-      @board = populate_dynamic_board(alive_cells)
-      return
-    end
-    
-    @board = new_board
+    @board = rebuild_board_with_new_values
   end
 
   private
 
+  # Method to rebuild the board with new values
+  def rebuild_board_with_new_values
+    game_board = Array.new(@rows) { Array.new(@cols, 0) }
+    alive_cells = []
+  
+    @rows.times do |row|
+      @cols.times do |col|
+        game_board[row][col] = get_new_value_of_cell(row, col)
+        game_board[row][col] == 1 ? alive_cells << [row, col] : nil
+      end
+    end
+
+    board = @is_dynamic ? build_dynamic_game_board(alive_cells) : game_board
+
+    board
+  end
+
+  # Method to get the new value of a cell based on conway's game of life rules
+  def get_new_value_of_cell(row, col)
+    alive_neighbors = get_number_of_alive_cell_neighbours(row, col)
+    
+    case @board[row][col]
+    when 1
+      return 0 if alive_neighbors < 2 # Lonely
+      return 1 if alive_neighbors == 2 || alive_neighbors == 3 # Happy
+      return 0 if alive_neighbors > 3 # Overcrowded
+    when 0
+      return 1 if alive_neighbors == 3 # New life
+    end
+  
+    0
+  end
+  
+
+  # Method to validate the input parameters
   def validate_parameters(initial_state, rows, cols)
     if initial_state.nil? && (rows.nil? || cols.nil?)
       raise ArgumentError, 'Initial state or board dimensions must be provided'
@@ -70,7 +78,7 @@ class GameOfLife
     end
   end
     
-
+  # Method to get the neighbours of a cell
   def get_cell_neighbours(row, col)
     top = row > 0 ? @board[row - 1][col] : nil
     bottom = row < @rows - 1 ? @board[row + 1][col] : nil
@@ -84,12 +92,14 @@ class GameOfLife
     [top, bottom, left, right, top_left, top_right, bottom_left, bottom_right]
   end
 
-  def get_number_of_alive_neighbours(row, col)
+  # Method to get the number of alive neighbours of a cell
+  def get_number_of_alive_cell_neighbours(row, col)
     cell_neighbours = get_cell_neighbours(row, col)
     alive_neighbors = cell_neighbours.count(1)
   end
 
-  def populate_fixed_board(initial_state)
+  # Method to build a fixed game board
+  def build_fixed_game_board(initial_state)
       board_array = Array.new(@rows) { Array.new(@cols, 0) }
       initial_state.each do |row, col|
           if row >= 0 && row < @rows && col >= 0 && col < @cols
@@ -101,6 +111,7 @@ class GameOfLife
       board_array
   end
 
+  # Method to get the initial cells for a dynamic board
   def get_initial_cells(initial_state)
     board = Hash.new(false)
     initial_state.each do |cell|
@@ -109,6 +120,7 @@ class GameOfLife
     board
   end
 
+  # Method to get the boundaries of a dynamic board
   def get_board_boundaries()
     min_row_value = @initial_cells.keys.map { |cell| cell[0] }.min - 1
     max_row_value = @initial_cells.keys.map { |cell| cell[0] }.max + 1
@@ -118,7 +130,9 @@ class GameOfLife
     [min_column_value, max_column_value, min_row_value, max_row_value]
   end
 
-  def populate_dynamic_board(initial_state)
+  # Method to build a dynamic game board
+  def build_dynamic_game_board(initial_state)
+    @is_dynamic = true
     @initial_cells = get_initial_cells(initial_state)
     min_column_value, max_column_value, min_row_value, max_row_value = get_board_boundaries
     board_array = []
