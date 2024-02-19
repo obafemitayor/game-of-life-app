@@ -111,7 +111,7 @@ class GameOfLife
       board_array
   end
 
-  # Method that returns a hash table that contains the initial state of the cells
+  # Method for returning a hash table that contains the initial state of the cells
   def get_initial_cells(initial_state)
     board = Hash.new(false)
     initial_state.each do |cell|
