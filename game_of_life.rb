@@ -30,6 +30,8 @@ class GameOfLife
   private
 
   # Method to rebuild the board with new values
+  # If the board is dynamic, we keep track of all the alive cells after implementing the rules of the game
+  # and then rebuild the dynamic board with the alive cells
   def rebuild_board_with_new_values
     game_board = Array.new(@rows) { Array.new(@cols, 0) }
     alive_cells = []
