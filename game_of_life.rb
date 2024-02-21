@@ -78,24 +78,19 @@ class GameOfLife
     end
   end
     
-  # Method to get the neighbours of a cell
-  def get_cell_neighbours(row, col)
-    top = row > 0 ? @board[row - 1][col] : nil
-    bottom = row < @rows - 1 ? @board[row + 1][col] : nil
-    left = col > 0 ? @board[row][col - 1] : nil
-    right = col < @cols - 1 ? @board[row][col + 1] : nil
-    top_left = row > 0 && col > 0 ? @board[row - 1][col - 1] : nil
-    top_right = row > 0 && col < @cols - 1 ? @board[row - 1][col + 1] : nil
-    bottom_left = row < @rows - 1 && col > 0 ? @board[row + 1][col - 1] : nil
-    bottom_right = row < @rows - 1 && col < @cols - 1 ? @board[row + 1][col + 1] : nil
-      
-    [top, bottom, left, right, top_left, top_right, bottom_left, bottom_right]
-  end
-
   # Method to get the number of alive neighbours of a cell
   def get_number_of_alive_cell_neighbours(row, col)
-    cell_neighbours = get_cell_neighbours(row, col)
-    alive_neighbors = cell_neighbours.count(1)
+    alive_neighbors = 0
+    alive_neighbors = row > 0 && @board[row - 1][col] === 1 ? alive_neighbors + 1 : alive_neighbors # check if top neighbor is alive
+    alive_neighbors = row < @rows - 1 && @board[row + 1][col] === 1 ? alive_neighbors + 1 : alive_neighbors # check if bottom neighbor is alive
+    alive_neighbors = col > 0 && @board[row][col - 1] === 1 ? alive_neighbors + 1 : alive_neighbors # check if left neighbor is alive
+    alive_neighbors = col < @cols - 1 && @board[row][col + 1] === 1 ? alive_neighbors + 1 : alive_neighbors # check if right neighbor is alive
+    alive_neighbors = row > 0 && col > 0 && @board[row - 1][col - 1] === 1 ? alive_neighbors + 1 : alive_neighbors # check if top left neighbor is alive
+    alive_neighbors = row > 0 && col < @cols - 1 && @board[row - 1][col + 1] === 1 ? alive_neighbors + 1 : alive_neighbors # check if top right neighbor is alive
+    alive_neighbors = row < @rows - 1 && col > 0 && @board[row + 1][col - 1] === 1 ? alive_neighbors + 1 : alive_neighbors # check if bottom left neighbor is alive
+    alive_neighbors = row < @rows - 1 && col < @cols - 1 && @board[row + 1][col + 1] === 1 ? alive_neighbors + 1 : alive_neighbors # check if bottom right neighbor is alive
+    
+    alive_neighbors
   end
 
   # Method to build a fixed game board
